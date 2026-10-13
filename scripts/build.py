@@ -56,8 +56,16 @@ def pair(issue, rows):
     emittente e scadenza, nome breve della famiglia; quello di mercato è quotato sul MOT, quello con premio no e per
     Futura e BTP Italia ha "CUM" nel nome breve, quello di mercato "EX")."""
     special, regular = issue.get("isin_with_premium"), issue.get("isin_without_premium")
-    if special or regular:
+    if special and regular:
         return special, regular
+    # Il documento ne riporta uno solo (o nessuno): l'altro da FIRDS.
+    found_special, found_regular = firds_pair(issue, rows)
+    special = special or (found_special if found_special != regular else None)
+    regular = regular or (found_regular if found_regular != special else None)
+    return special, regular
+
+
+def firds_pair(issue, rows):
     word = PRODUCT_WORDS[issue["product"]]
     candidates = [r for r in rows.values() if r["issuer_lei"] == ITALY_LEI and r["maturity"] == issue["maturity"]
                   and word in r["short"].upper() and "STRIP" not in r["short"].upper()
