@@ -126,8 +126,10 @@ def main():
     bonds, firds_date = firds.load(today, args.cache)
     rows = {isin: row(bond) for isin, bond in bonds.items()}
     issues, warnings = mef.load(os.path.join(root, "data", "mef"), os.environ.get("GROQ_API_KEY"), today.isoformat())
+    pending = [f"{i['product']} {i['maturity']}" for i in issues if i.get("pending")]
     for issue in issues:
-        apply_issue(issue, rows, warnings)
+        if not issue.get("pending"):
+            apply_issue(issue, rows, warnings)
     manual = apply_manual(os.path.join(root, "data", "aggiunte.csv"), rows)
 
     os.makedirs(args.out, exist_ok=True)
@@ -144,7 +146,8 @@ def main():
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "firdsDate": firds_date,
         "count": len(rows),
-        "retailIssues": len(issues),
+        "retailIssues": len(issues) - len(pending),
+        "pendingIssues": pending,
         "manualRows": manual,
         "sha256": hashlib.sha256(data).hexdigest(),
         "bytes": len(data),

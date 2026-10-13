@@ -226,6 +226,15 @@ def load(folder, api_key, today):
         finally:
             time.sleep(PAUSE)  # limite di token al minuto del piano gratuito
         problems = validate(issue, maturity)
+        # Emissione annunciata ma senza tassi (il Tesoro li comunica pochi giorni prima del collocamento): in attesa,
+        # non un errore; si conserva per non rileggere gli stessi documenti.
+        if not issue.get("steps") and not any("ccertamento" in link for link in links):
+            issue.update({"product": product, "maturity": maturity, "pending": True, "fingerprint": fingerprint,
+                          "documents": sorted(links)})
+            with open(path, "w") as handle:
+                json.dump(issue, handle, ensure_ascii=False, indent=2)
+            issues.append(issue)
+            continue
         if problems:
             warnings.append(f"{key}: risposta scartata ({'; '.join(problems)})")
             if cached:
