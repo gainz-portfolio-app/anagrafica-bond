@@ -127,23 +127,23 @@ Regole: i tassi sono numeri con il punto decimale (4,10% -> 4.10). Se ci sono si
 definitivi, usa i definitivi e metti rates_final true. Non inventare: se un dato non c'è, null. Rispondi solo con il JSON."""
 
 
-def extract(texts, api_key, attempts=4):
+def extract(texts, api_key, attempts=4, prompt=None):
     """Una richiesta a Groq; con "troppe richieste" (429) aspetta quanto chiede il servizio e riprova."""
     for attempt in range(attempts):
         try:
-            return request_extraction(texts, api_key)
+            return request_extraction(texts, api_key, prompt or PROMPT)
         except urllib.error.HTTPError as error:
             if error.code != 429 or attempt == attempts - 1:
                 raise
             time.sleep(min(float(error.headers.get("retry-after") or 30), 90))
 
 
-def request_extraction(texts, api_key):
+def request_extraction(texts, api_key, prompt):
     body = json.dumps({
         "model": GROQ_MODEL,
         "temperature": 0,
         "response_format": {"type": "json_object"},
-        "messages": [{"role": "system", "content": PROMPT},
+        "messages": [{"role": "system", "content": prompt},
                      {"role": "user", "content": "\n\n=====\n\n".join(texts)}],
     }).encode()
     request = urllib.request.Request(GROQ_URL, data=body, headers={

@@ -38,7 +38,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/mef
+          git add data/mef data/aste
           git diff --cached --quiet || { git commit -m "Emissioni retail lette dai documenti del Tesoro"; git push; }
           # GitHub sospende le Action pianificate dopo 60 giorni senza attività nel repository: dopo 45 giorni senza
           # commit se ne fa uno con la data dell'ultimo giro.

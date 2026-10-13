@@ -14,6 +14,7 @@ import sys
 from datetime import date, datetime, timezone
 
 sys.path.insert(0, os.path.dirname(__file__))
+import aste  # noqa: E402
 import firds  # noqa: E402
 import mef  # noqa: E402
 
@@ -21,7 +22,8 @@ ITALY_LEI = "815600DE60799F5A9309"
 ITALIAN_VENUES = {"MOTX", "ETLX", "HMTF", "XMOT"}
 COLUMNS = ["isin", "name", "short", "cfi", "currency", "issuer_lei", "maturity", "rate", "index", "spread", "unit",
            "venues", "kind", "product", "issue_date", "frequency", "steps", "inflation_index", "loyalty_premium",
-           "loyalty_premium_rule", "maxi_coupon", "pair_isin", "pair_role", "source"]
+           "loyalty_premium_rule", "maxi_coupon", "pair_isin", "pair_role", "first_coupon", "first_coupon_rate",
+           "source"]
 # Parole del nome breve FIRDS di ogni famiglia retail ("ITALIA/TV BTP FUTURA 20281117 EX").
 PRODUCT_WORDS = {"BTP Valore": "BTP VALORE", "BTP Valore Insieme": "BTP VALORE INS", "BTP Più": "BTP PIU",
                  "BTP Futura": "BTP FUTURA", "BTP Italia": "BTP ITALIA", "BTP Italia Sì": "BTP ITALIA SI"}
@@ -46,7 +48,7 @@ def row(bond):
         "rate": bond["rate"] or "", "index": bond["index"] or "", "spread": bond["spread"] or "",
         "unit": bond["unit"] or "", "venues": " ".join(sorted(bond["venues"])), "kind": kind(bond),
         "product": "", "issue_date": "", "frequency": "", "steps": "", "inflation_index": "", "loyalty_premium": "",
-        "loyalty_premium_rule": "", "maxi_coupon": "",
+        "loyalty_premium_rule": "", "maxi_coupon": "", "first_coupon": "", "first_coupon_rate": "",
         "pair_isin": "", "pair_role": "", "source": "firds",
     }
 
@@ -105,6 +107,31 @@ def apply_issue(issue, rows, warnings):
         rows[isin] = base
 
 
+def apply_auction(title, rows, today):
+    """Data di emissione e prima cedola irregolare di un titolo di Stato da un comunicato d'asta. L'ISIN "da attribuire"
+    si trova in FIRDS (Italia, stessa scadenza e stesso tasso nel nome breve, niente strip)."""
+    isin = title.get("isin")
+    if not isin:
+        rate = title.get("coupon_rate")
+        matches = [r for r in rows.values() if r["issuer_lei"] == ITALY_LEI and r["maturity"] == title["maturity"]
+                   and "STRIP" not in r["short"].upper() and r["product"] == ""
+                   and (rate is None or (r["short"].split("/")[-1].split() or [""])[0] == f"{rate:g}")]
+        if len(matches) != 1:
+            return False
+        isin = matches[0]["isin"]
+    row = rows.get(isin)
+    if row is None or row["product"]:
+        return False
+    row["issue_date"] = row["issue_date"] or title["issue_date"]
+    row["frequency"] = row["frequency"] or ("2" if title.get("coupon_rate") else "")
+    first = title.get("first_coupon_date")
+    if title.get("first_coupon_rate") and first and first >= today:
+        row["first_coupon"] = first
+        row["first_coupon_rate"] = str(title["first_coupon_rate"])
+    row["source"] = row["source"] + "+asta" if "asta" not in row["source"] else row["source"]
+    return True
+
+
 def apply_manual(path, rows):
     """Correzioni a mano: le celle piene vincono; una riga nuova aggiunge il titolo."""
     if not os.path.exists(path):
@@ -138,6 +165,10 @@ def main():
     for issue in issues:
         if not issue.get("pending"):
             apply_issue(issue, rows, warnings)
+    since = date(today.year - 1, today.month, 1).isoformat()
+    auctions, auction_warnings = aste.load(os.path.join(root, "data", "aste"), os.environ.get("GROQ_API_KEY"), since)
+    warnings += auction_warnings
+    applied = sum(apply_auction(title, rows, today.isoformat()) for title in auctions)
     manual = apply_manual(os.path.join(root, "data", "aggiunte.csv"), rows)
 
     os.makedirs(args.out, exist_ok=True)
@@ -156,6 +187,7 @@ def main():
         "count": len(rows),
         "retailIssues": len(issues) - len(pending),
         "pendingIssues": pending,
+        "auctionTitles": applied,
         "manualRows": manual,
         "sha256": hashlib.sha256(data).hexdigest(),
         "bytes": len(data),

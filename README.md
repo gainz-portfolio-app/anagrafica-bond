@@ -10,6 +10,7 @@ Nella release [`latest`](../../releases/tag/latest):
 - `anagrafica.csv.gz`: un titolo per riga, CSV compresso. Colonne:
   - `isin`, `name`, `short`, `cfi`, `currency`, `issuer_lei`, `maturity`, `rate`, `index`, `spread`, `unit`, `venues` (codici MIC dei mercati), `kind` (`fixed`, `zero`, `variable`, `stepUp`, `inflationLinked`);
   - per le emissioni retail del Tesoro: `product`, `issue_date` (godimento), `frequency` (cedole all'anno), `steps` (`AAAA-MM-GG:tasso;…`, tasso annuo dalla cedola indicata), `inflation_index` (per gli indicizzati i tassi sono reali), `loyalty_premium` (% del nominale, solo sul codice con premio) o `loyalty_premium_rule` (se il premio non è fisso, per esempio legato al PIL nei Futura), `maxi_coupon`, `pair_isin` e `pair_role` (`withPremium` = codice del collocamento con l'extra premio, `market` = codice di mercato);
+  - per i titoli di Stato ordinari (dai comunicati delle aste del Tesoro dell'ultimo anno): `issue_date`, `frequency`, `first_coupon` e `first_coupon_rate` se la prima cedola è irregolare (corta o lunga) e non ancora pagata;
   - `source`.
 - `manifest.json`: data dei dati, numero di titoli, impronta SHA-256 del file, avvisi dell'ultimo aggiornamento.
 
