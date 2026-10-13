@@ -1,0 +1,62 @@
+name: Anagrafica obbligazioni
+
+# Domenica (dopo il file completo che ESMA pubblica il sabato) e mercoledì (con le variazioni); a mano da
+# Actions › Anagrafica obbligazioni › Run workflow, per esempio quando il Tesoro annuncia un'emissione.
+on:
+  schedule:
+    - cron: "0 6 * * 0"
+    - cron: "0 6 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: anagrafica
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Strumenti per leggere i PDF
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
+      - name: Costruisci l'anagrafica
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python3 scripts/build.py
+
+      - name: Conserva le emissioni lette dai documenti del Tesoro
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/mef
+          git diff --cached --quiet || { git commit -m "Emissioni retail lette dai documenti del Tesoro"; git push; }
+
+      - name: Pubblica
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view latest >/dev/null 2>&1 || gh release create latest --title "Anagrafica obbligazioni" \
+            --notes "File aggiornato due volte a settimana. Fonti: ESMA (FIRDS) e MEF, elaborati da Gainz: vedi README."
+          gh release upload latest dist/anagrafica.csv.gz dist/manifest.json --clobber
+
+      # Avvisi (documenti del Tesoro non letti, ISIN non trovati): il lavoro risulta fallito e GitHub manda un'email,
+      # ma il file è già pubblicato con i dati buoni.
+      - name: Avvisi
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          warnings = json.load(open("dist/manifest.json"))["warnings"]
+          for w in warnings:
+              print(f"::warning::{w}")
+          sys.exit(1 if warnings else 0)
+          PY
