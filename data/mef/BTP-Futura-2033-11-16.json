@@ -1,0 +1,41 @@
+{
+  "product": "BTP Futura",
+  "issue_date": "2021-11-16",
+  "settlement_date": null,
+  "maturity": "2033-11-16",
+  "frequency": 2,
+  "coupon_dates": [
+    "05-16",
+    "11-16"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2022-05-16",
+      "last_coupon": "2025-11-16",
+      "rate": 0.75
+    },
+    {
+      "first_coupon": "2026-05-16",
+      "last_coupon": "2029-11-16",
+      "rate": 1.35
+    },
+    {
+      "first_coupon": "2030-05-16",
+      "last_coupon": "2033-11-16",
+      "rate": 1.7
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": null,
+  "loyalty_premium_rule": "Collegato alla crescita dell'economia nazionale durante il periodo di vita del titolo, corrisposto in due momenti diversi: alla fine dei primi 8 anni (16 novembre 2029) e alla scadenza finale.",
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Il documento non riporta i codici ISIN specifici.",
+  "fingerprint": "1b2fa62372d71981",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_Accertamento_BTP_Futura_16.11.2033_x4x.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_emissione_BTP_Futura_16.11.2033_x4x.pdf"
+  ]
+}

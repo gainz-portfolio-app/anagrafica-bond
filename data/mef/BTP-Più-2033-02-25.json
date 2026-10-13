@@ -1,0 +1,38 @@
+{
+  "product": "BTP Più",
+  "issue_date": "2025-02-25",
+  "settlement_date": null,
+  "maturity": "2033-02-25",
+  "frequency": 4,
+  "coupon_dates": [
+    "02-25",
+    "05-25",
+    "08-25",
+    "11-25"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2025-05-25",
+      "last_coupon": "2029-02-25",
+      "rate": 2.85
+    },
+    {
+      "first_coupon": "2029-05-25",
+      "last_coupon": "2033-02-25",
+      "rate": 3.7
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": null,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Facoltà di rimborso anticipato al valore nominale il 25 febbraio 2029 per i titoli acquistati nel periodo di collocamento e mantenuti ininterrottamente.",
+  "fingerprint": "1e58c6263f61104f",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-Accertamento-BTP-Piu-25.02.2033.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-emissione-BTP-Piu-25.02.2033.pdf"
+  ]
+}

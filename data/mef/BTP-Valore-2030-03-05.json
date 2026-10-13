@@ -1,0 +1,38 @@
+{
+  "product": "BTP Valore",
+  "issue_date": "2024-03-05",
+  "settlement_date": "2024-03-05",
+  "maturity": "2030-03-05",
+  "frequency": 4,
+  "coupon_dates": [
+    "03-05",
+    "06-05",
+    "09-05",
+    "12-05"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2024-06-05",
+      "last_coupon": "2027-03-05",
+      "rate": 3.25
+    },
+    {
+      "first_coupon": "2027-06-05",
+      "last_coupon": "2030-03-05",
+      "rate": 4.0
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": 0.7,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Terza emissione BTP Valore. Tassi definitivi accertati dal decreto. Premio finale extra dello 0,7% per i detentori con ISIN dedicato.",
+  "fingerprint": "598b02777629b8af",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_accertamento/Decreto-di-Accertamento-BTP-Valore-05.03.2030-3.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-05.03.2030-3.pdf"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "product": "BTP Valore",
+  "issue_date": "2025-10-28",
+  "settlement_date": "2025-10-28",
+  "maturity": "2032-10-28",
+  "frequency": 4,
+  "coupon_dates": [
+    "01-28",
+    "04-28",
+    "07-28",
+    "10-28"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2026-01-28",
+      "last_coupon": "2028-10-28",
+      "rate": 2.6
+    },
+    {
+      "first_coupon": "2029-01-28",
+      "last_coupon": "2030-10-28",
+      "rate": 3.1
+    },
+    {
+      "first_coupon": "2031-01-28",
+      "last_coupon": "2032-10-28",
+      "rate": 4.0
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": 0.8,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Premio finale extra dello 0,8% riconosciuto solo ai detentori con ISIN di collocamento.",
+  "fingerprint": "419c22b5a7c7057a",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_accertamento/Decreto-di-Accertamento-BTP-Valore-28.10.2032-6.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-28.10.2032.6.pdf"
+  ]
+}

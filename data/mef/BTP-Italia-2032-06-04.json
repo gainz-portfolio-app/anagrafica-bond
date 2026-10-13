@@ -1,0 +1,31 @@
+{
+  "product": "BTP Italia",
+  "issue_date": "2025-06-04",
+  "settlement_date": null,
+  "maturity": "2032-06-04",
+  "frequency": 2,
+  "coupon_dates": [
+    "06-04",
+    "12-04"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2025-12-04",
+      "last_coupon": "2032-06-04",
+      "rate": 1.85
+    }
+  ],
+  "inflation_index": "FOI senza tabacchi",
+  "loyalty_premium_percent": null,
+  "loyalty_premium_rule": "Premio Finale Extra pari all'1,00% del capitale nominale non rivalutato, riconosciuto agli acquirenti della Prima Fase che detengano il titolo fino alla scadenza.",
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Il tasso cedolare reale annuo definitivo è stato accertato al 1,85%. Il premio finale extra è legato alla detenzione ininterrotta da parte di chi ha acquistato nella Prima Fase.",
+  "fingerprint": "15599cac1a6af1c7",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-accertamento-BTP-Italia-20-04.06.2032.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-emissione-BTP-Italia-04.06.2032-20.pdf"
+  ]
+}

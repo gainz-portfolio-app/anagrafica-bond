@@ -1,0 +1,45 @@
+{
+  "product": "BTP Valore",
+  "issue_date": "2026-03-10",
+  "settlement_date": "2026-03-10",
+  "maturity": "2032-03-10",
+  "frequency": 4,
+  "coupon_dates": [
+    "03-10",
+    "06-10",
+    "09-10",
+    "12-10"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2026-06-10",
+      "last_coupon": "2028-03-10",
+      "rate": 2.6
+    },
+    {
+      "first_coupon": "2028-06-10",
+      "last_coupon": "2030-03-10",
+      "rate": 3.2
+    },
+    {
+      "first_coupon": "2030-06-10",
+      "last_coupon": "2032-03-10",
+      "rate": 3.8
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": 0.8,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": "IT0005696320",
+  "isin_without_premium": null,
+  "notes": "ISIN senza premio non esplicitamente indicato nei documenti forniti.",
+  "fingerprint": "be6c5fc98ab8314e",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-10.03.2032-7-Scheda-Informativa.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-10.03.2032-7-Tassi-cedolari-minimi-garantiti.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_accertamento/Decreto-di-Accertamento-BTP-Valore-10.03.2032-7.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-10.03.2032-7.pdf"
+  ]
+}

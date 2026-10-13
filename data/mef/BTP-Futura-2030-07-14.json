@@ -1,0 +1,41 @@
+{
+  "product": "BTP Futura",
+  "issue_date": "2020-07-14",
+  "settlement_date": null,
+  "maturity": "2030-07-14",
+  "frequency": 2,
+  "coupon_dates": [
+    "01-14",
+    "07-14"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2021-01-14",
+      "last_coupon": "2024-07-14",
+      "rate": 1.15
+    },
+    {
+      "first_coupon": "2025-01-14",
+      "last_coupon": "2027-07-14",
+      "rate": 1.3
+    },
+    {
+      "first_coupon": "2028-01-14",
+      "last_coupon": "2030-07-14",
+      "rate": 1.45
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": null,
+  "loyalty_premium_rule": "pari alla variazione media annua percentuale del PIL nominale italiano, calcolata sul periodo intercorrente tra l'anno di emissione del titolo e l'anno precedente quello di scadenza, arrotondata alla seconda cifra decimale",
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Tassi cedolari reali annui definitivi stabiliti dal Decreto di Accertamento.",
+  "fingerprint": "6b0797c71227f0ff",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_Accertamento_BTP_Futura_14.07.2030_x1x.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_emissione_BTP_Futura_14.07.2030_x1x.pdf"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "product": "BTP Italia Sì",
+  "issue_date": "2026-06-23",
+  "settlement_date": "2026-06-23",
+  "maturity": "2031-06-23",
+  "frequency": 2,
+  "coupon_dates": [
+    "06-23",
+    "12-23"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2026-12-23",
+      "last_coupon": "2031-06-23",
+      "rate": 1.6
+    }
+  ],
+  "inflation_index": "FOI senza tabacchi",
+  "loyalty_premium_percent": 0.6,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Tasso cedolare annuo reale del 1,60% accertato dal decreto. Premio finale extra dello 0,6% del capitale nominale per i detentori fino alla scadenza.",
+  "fingerprint": "3fad1bfa5c983ea9",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-Accertamento-BTP-Italia-Si-23.06.2031-1.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-emissione-BTP-Italia-Si-23.06.2031-1.pdf"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "product": "BTP Valore",
+  "issue_date": "2024-05-14",
+  "settlement_date": "2024-05-14",
+  "maturity": "2030-05-14",
+  "frequency": 4,
+  "coupon_dates": [
+    "02-14",
+    "05-14",
+    "08-14",
+    "11-14"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2024-08-14",
+      "last_coupon": "2027-05-14",
+      "rate": 3.35
+    },
+    {
+      "first_coupon": "2027-08-14",
+      "last_coupon": "2030-05-14",
+      "rate": 3.9
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": 0.8,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Premio finale extra dello 0,8% riconosciuto solo ai detentori con ISIN con premio.",
+  "fingerprint": "e7c901d374b21042",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_accertamento/Decreto-di-Accertamento-BTP-Valore-14.05.2030-4.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-14.05.2030-4.pdf"
+  ]
+}

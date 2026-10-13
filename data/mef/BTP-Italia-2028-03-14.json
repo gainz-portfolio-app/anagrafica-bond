@@ -1,0 +1,31 @@
+{
+  "product": "BTP Italia",
+  "issue_date": "2023-03-14",
+  "settlement_date": null,
+  "maturity": "2028-03-14",
+  "frequency": 2,
+  "coupon_dates": [
+    "03-14",
+    "09-14"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2023-09-14",
+      "last_coupon": "2028-03-14",
+      "rate": 2.0
+    }
+  ],
+  "inflation_index": "FOI senza tabacchi",
+  "loyalty_premium_percent": 0.8,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Il tasso cedolare reale annuo definitivo è stato accertato al 2,00%.",
+  "fingerprint": "d950ca12b691fecb",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-Accertamento-BTP-Italia-14.03.2028-19.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-emissione-BTP-Italia-14.03.2028-19.pdf"
+  ]
+}

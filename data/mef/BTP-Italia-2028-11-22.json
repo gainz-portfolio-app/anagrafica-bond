@@ -1,0 +1,31 @@
+{
+  "product": "BTP Italia",
+  "issue_date": "2022-11-22",
+  "settlement_date": null,
+  "maturity": "2028-11-22",
+  "frequency": 2,
+  "coupon_dates": [
+    "05-22",
+    "11-22"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2023-05-22",
+      "last_coupon": "2028-11-22",
+      "rate": 1.6
+    }
+  ],
+  "inflation_index": "FOI senza tabacchi",
+  "loyalty_premium_percent": 0.8,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Il tasso cedolare reale annuo definitivo è stato accertato al 1,60%.",
+  "fingerprint": "6f7ea2a142e5266e",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-Accertamento-BTP-Italia-22.11.2028-18.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-emissione-BTP-Italia-22.11.2028-18.pdf"
+  ]
+}

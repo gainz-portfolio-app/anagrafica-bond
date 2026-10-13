@@ -1,0 +1,38 @@
+{
+  "product": "BTP Valore",
+  "issue_date": "2023-10-10",
+  "settlement_date": null,
+  "maturity": "2028-10-10",
+  "frequency": 4,
+  "coupon_dates": [
+    "01-10",
+    "04-10",
+    "07-10",
+    "10-10"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2024-01-10",
+      "last_coupon": "2026-10-10",
+      "rate": 4.1
+    },
+    {
+      "first_coupon": "2027-01-10",
+      "last_coupon": "2028-10-10",
+      "rate": 4.5
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": 0.5,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": null,
+  "fingerprint": "a328bff8c115e5d5",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_accertamento/Decreto-di-Accertamento-BTP-Valore-10.10.2028-2.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-10.10.2028-2.pdf"
+  ]
+}

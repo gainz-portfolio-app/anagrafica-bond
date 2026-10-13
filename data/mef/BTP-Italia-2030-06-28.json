@@ -1,0 +1,31 @@
+{
+  "product": "BTP Italia",
+  "issue_date": "2022-06-28",
+  "settlement_date": null,
+  "maturity": "2030-06-28",
+  "frequency": 2,
+  "coupon_dates": [
+    "06-28",
+    "12-28"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2022-12-28",
+      "last_coupon": "2030-06-28",
+      "rate": 1.6
+    }
+  ],
+  "inflation_index": "FOI senza tabacchi",
+  "loyalty_premium_percent": null,
+  "loyalty_premium_rule": "Premio intermedio fisso dello 0,40% lordo del valore nominale non rivalutato per i titoli detenuti fino al 28 giugno 2026; premio finale fisso dello 0,60% lordo del valore nominale non rivalutato per i titoli acquistati nella Prima Fase e detenuti fino alla scadenza (28 giugno 2030). Premio complessivo massimo dell'1,00%.",
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Il tasso cedolare reale annuo definitivo è stato accertato al 1,60%. I titoli sono indicizzati all'inflazione italiana (FOI senza tabacchi).",
+  "fingerprint": "dc02e3f9d8150bd0",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-Accertamento-BTP-Italia-28.06.2030-17.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto-di-emissione-BTP-Italia-28.06.2030-17.pdf"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "product": "BTP Italia",
+  "issue_date": "2019-10-28",
+  "settlement_date": null,
+  "maturity": "2027-10-28",
+  "frequency": 2,
+  "coupon_dates": [
+    "04-28",
+    "10-28"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2020-04-28",
+      "last_coupon": "2027-10-28",
+      "rate": 0.65
+    }
+  ],
+  "inflation_index": "FOI senza tabacchi",
+  "loyalty_premium_percent": 0.4,
+  "loyalty_premium_rule": "Corrisposto ai titoli acquistati nella Prima Fase di collocamento e detenuti ininterrottamente fino alla scadenza, pari allo 0,40% del capitale nominale non rivalutato.",
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Il tasso cedolare reale annuo definitivo è stato accertato nello 0,65% dal decreto di accertamento.",
+  "fingerprint": "5b749e2bd7d91d90",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_Accertamento_BTP_Italia_28.10.2027_x15x.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_emissione_BTP_Italia_28.10.2027_x15x.pdf"
+  ]
+}

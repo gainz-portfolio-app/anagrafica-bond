@@ -1,0 +1,41 @@
+{
+  "product": "BTP Futura",
+  "issue_date": "2020-11-17",
+  "settlement_date": null,
+  "maturity": "2028-11-17",
+  "frequency": 2,
+  "coupon_dates": [
+    "05-17",
+    "11-17"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2021-05-17",
+      "last_coupon": "2023-11-17",
+      "rate": 0.35
+    },
+    {
+      "first_coupon": "2024-05-17",
+      "last_coupon": "2026-11-17",
+      "rate": 0.6
+    },
+    {
+      "first_coupon": "2027-05-17",
+      "last_coupon": "2028-11-17",
+      "rate": 1.0
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": null,
+  "loyalty_premium_rule": "pari alla variazione media annua percentuale del PIL nominale italiano, calcolata sul periodo intercorrente tra l’anno di emissione del titolo e l’anno precedente quello di scadenza, arrotondata alla seconda cifra decimale",
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": null,
+  "fingerprint": "39891b44526fc555",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_Accertamento_BTP_Futura_17.11.2028_x2x_.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/Decreto_di_emissione_BTP_Futura_17.11.2028_x2x.pdf"
+  ]
+}

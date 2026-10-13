@@ -1,0 +1,36 @@
+{
+  "product": "BTP Valore",
+  "issue_date": "2023-06-13",
+  "settlement_date": null,
+  "maturity": "2027-06-13",
+  "frequency": 2,
+  "coupon_dates": [
+    "06-13",
+    "12-13"
+  ],
+  "rates_final": true,
+  "steps": [
+    {
+      "first_coupon": "2023-12-13",
+      "last_coupon": "2025-06-13",
+      "rate": 3.25
+    },
+    {
+      "first_coupon": "2025-12-13",
+      "last_coupon": "2027-06-13",
+      "rate": 4.0
+    }
+  ],
+  "inflation_index": null,
+  "loyalty_premium_percent": 0.5,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Tassi definitivi accertati dal decreto. Il premio finale di fedeltà è dello 0,5% del nominale per chi detiene il titolo fino alla scadenza.",
+  "fingerprint": "0a7735d7f9da2a13",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_accertamento/Decreto-di-Accertamento-BTP-Valore-13.06.2027-I.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-13.06.2027-1.pdf"
+  ]
+}
