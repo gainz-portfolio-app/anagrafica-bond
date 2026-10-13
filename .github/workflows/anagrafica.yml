@@ -40,6 +40,14 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/mef
           git diff --cached --quiet || { git commit -m "Emissioni retail lette dai documenti del Tesoro"; git push; }
+          # GitHub sospende le Action pianificate dopo 60 giorni senza attività nel repository: dopo 45 giorni senza
+          # commit se ne fa uno con la data dell'ultimo giro.
+          if [ $(( $(date +%s) - $(git log -1 --format=%ct) )) -gt $(( 45 * 86400 )) ]; then
+            date -u +%F > data/ultimo-giro.txt
+            git add data/ultimo-giro.txt
+            git commit -m "Segno di vita: ultimo giro $(date -u +%F)"
+            git push
+          fi
 
       - name: Pubblica
         env:
