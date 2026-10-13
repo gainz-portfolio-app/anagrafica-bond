@@ -11,6 +11,8 @@ import json
 import os
 import re
 import subprocess
+import time
+import urllib.error
 import urllib.request
 
 SITE = "https://www.dt.mef.gov.it"
@@ -30,6 +32,7 @@ PAGES = [
 USEFUL = re.compile(r"(Decreto[-_ ](di[-_ ])?(emissione|accertamento)|Scheda-Informativa|Tassi-cedolari)", re.I)
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "qwen/qwen3.8-27b")
+PAUSE = float(os.environ.get("MEF_PAUSE", "20"))
 
 
 def fetch(url):
@@ -74,8 +77,27 @@ def documents(today):
 
 def pdf_text(data):
     """Testo del PDF con pdftotext (poppler)."""
-    result = subprocess.run(["pdftotext", "-layout", "-", "-"], input=data, capture_output=True, check=True)
+    result = subprocess.run(["pdftotext", "-", "-"], input=data, capture_output=True, check=True)
     return result.stdout.decode("utf-8", "replace")
+
+
+# Righe con i dati che servono; i decreti sono lunghi (premesse "VISTO…", commissioni, regolamento) e il piano gratuito
+# di Groq accetta poche migliaia di token a richiesta.
+RELEVANT = re.compile(r"(%|godimento|scadenz|cedol|tass|ISIN|IT0\d|premio|fedelt|period|pagabil|rimborso|indicizz|"
+                      r"inflazion|FOI|HICP|PIL)", re.I)
+
+
+def condense(text, limit=6000):
+    """Solo le righe con dati utili, con la riga prima e quella dopo per il contesto; senza le premesse."""
+    lines = [re.sub(r"\s+", " ", line).strip() for line in text.splitlines()]
+    lines = [line for line in lines if line]
+    keep = set()
+    for i, line in enumerate(lines):
+        if line.upper().startswith(("VISTO", "VISTA", "VISTI", "CONSIDERATO", "RITENUTO")):
+            continue
+        if RELEVANT.search(line):
+            keep.update({i - 1, i, i + 1})
+    return "\n".join(lines[i] for i in sorted(keep) if 0 <= i < len(lines))[:limit]
 
 
 PROMPT = """Sei un esperto di titoli di Stato italiani. Dai documenti ufficiali del Ministero dell'Economia (decreti,
@@ -105,7 +127,18 @@ Regole: i tassi sono numeri con il punto decimale (4,10% -> 4.10). Se ci sono si
 definitivi, usa i definitivi e metti rates_final true. Non inventare: se un dato non c'è, null. Rispondi solo con il JSON."""
 
 
-def extract(texts, api_key):
+def extract(texts, api_key, attempts=4):
+    """Una richiesta a Groq; con "troppe richieste" (429) aspetta quanto chiede il servizio e riprova."""
+    for attempt in range(attempts):
+        try:
+            return request_extraction(texts, api_key)
+        except urllib.error.HTTPError as error:
+            if error.code != 429 or attempt == attempts - 1:
+                raise
+            time.sleep(min(float(error.headers.get("retry-after") or 30), 90))
+
+
+def request_extraction(texts, api_key):
     body = json.dumps({
         "model": GROQ_MODEL,
         "temperature": 0,
@@ -182,8 +215,16 @@ def load(folder, api_key, today):
             if cached:
                 issues.append(cached)
             continue
-        texts = [f"Documento: {link.rsplit('/', 1)[1]}\n\n{pdf_text(fetch(link))}" for link in links]
-        issue = extract(texts, api_key)
+        try:
+            texts = [f"Documento: {link.rsplit('/', 1)[1]}\n\n{condense(pdf_text(fetch(link)))}" for link in links]
+            issue = extract(texts, api_key)
+        except Exception as error:  # un'emissione non letta non ferma le altre
+            warnings.append(f"{key}: documenti non letti ({error})")
+            if cached:
+                issues.append(cached)
+            continue
+        finally:
+            time.sleep(PAUSE)  # limite di token al minuto del piano gratuito
         problems = validate(issue, maturity)
         if problems:
             warnings.append(f"{key}: risposta scartata ({'; '.join(problems)})")
