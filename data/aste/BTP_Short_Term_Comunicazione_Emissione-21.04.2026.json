@@ -1,0 +1,16 @@
+{
+  "document": "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/ctz_e_btpei_comunicazione_emissione/BTP_Short_Term_Comunicazione_Emissione-21.04.2026.pdf",
+  "titles": [
+    {
+      "type": "BTP Short Term",
+      "isin": "IT0005692410",
+      "tranche": 7,
+      "issue_date": "2026-01-29",
+      "maturity": "2028-02-28",
+      "coupon_rate": 2.2,
+      "first_coupon_date": "2026-08-28",
+      "first_coupon_rate": null,
+      "first_coupon_kind": null
+    }
+  ]
+}

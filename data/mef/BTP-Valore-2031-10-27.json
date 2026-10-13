@@ -1,0 +1,27 @@
+{
+  "product": "BTP Valore",
+  "issue_date": "2026-10-27",
+  "settlement_date": "2026-10-27",
+  "maturity": "2031-10-27",
+  "frequency": 4,
+  "coupon_dates": [
+    "01-27",
+    "04-27",
+    "07-27",
+    "10-27"
+  ],
+  "rates_final": false,
+  "steps": [],
+  "inflation_index": null,
+  "loyalty_premium_percent": null,
+  "loyalty_premium_rule": null,
+  "maxi_coupon": null,
+  "isin_with_premium": null,
+  "isin_without_premium": null,
+  "notes": "Scheda informativa pre-collocamento: i tassi definitivi non sono ancora noti (vengono fissati con Decreto di Accertamento dopo la chiusura del collocamento). I tassi minimi garantiti non sono specificati nel testo fornito.",
+  "pending": true,
+  "fingerprint": "fac65f529c8da7f5",
+  "documents": [
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-27.10.2031-8-Scheda-Informativa.pdf"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "document": "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/ctz_e_btpei_comunicazione_emissione/BTP-Short-Term-e-BTPi-Comunicazione-Emissione-19.06.2026.pdf",
+  "titles": [
+    {
+      "type": "BTP Short Term",
+      "isin": "IT0005692410",
+      "tranche": 11,
+      "issue_date": "2026-01-29",
+      "maturity": "2028-02-28",
+      "coupon_rate": 2.2,
+      "first_coupon_date": "2026-08-28",
+      "first_coupon_rate": null,
+      "first_coupon_kind": null
+    },
+    {
+      "type": "BTP€i 15 Anni",
+      "isin": "IT0005547812",
+      "tranche": 12,
+      "issue_date": "2023-05-15",
+      "maturity": "2039-05-15",
+      "coupon_rate": 2.4,
+      "first_coupon_date": "2026-11-15",
+      "first_coupon_rate": null,
+      "first_coupon_kind": null
+    }
+  ]
+}

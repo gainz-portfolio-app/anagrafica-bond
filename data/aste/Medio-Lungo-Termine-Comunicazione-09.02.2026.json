@@ -1,0 +1,38 @@
+{
+  "document": "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/medio_lungo_termine_comunicazioni/Medio-Lungo-Termine-Comunicazione-09.02.2026.pdf",
+  "titles": [
+    {
+      "type": "BTP 3 Anni",
+      "isin": "IT0005689960",
+      "tranche": 3,
+      "issue_date": "2026-01-15",
+      "maturity": "2029-03-15",
+      "coupon_rate": 2.4,
+      "first_coupon_date": "2026-03-15",
+      "first_coupon_rate": 0.39116,
+      "first_coupon_kind": "corta"
+    },
+    {
+      "type": "BTP 7 Anni",
+      "isin": "IT0005689994",
+      "tranche": 2,
+      "issue_date": "2026-01-15",
+      "maturity": "2033-03-15",
+      "coupon_rate": 3.15,
+      "first_coupon_date": "2026-03-15",
+      "first_coupon_rate": 0.513398,
+      "first_coupon_kind": "corta"
+    },
+    {
+      "type": "BTP 7 Anni",
+      "isin": "IT0005647265",
+      "tranche": 10,
+      "issue_date": "2025-04-25",
+      "maturity": "2032-07-15",
+      "coupon_rate": 3.25,
+      "first_coupon_date": "2026-07-15",
+      "first_coupon_rate": null,
+      "first_coupon_kind": null
+    }
+  ]
+}

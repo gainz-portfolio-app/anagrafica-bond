@@ -1,0 +1,16 @@
+{
+  "document": "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/medio_lungo_termine_comunicazioni/Medio-Lungo-Termine-Comunicazione-08.06.2026.pdf",
+  "titles": [
+    {
+      "type": "BTP 3 Anni",
+      "isin": null,
+      "tranche": 1,
+      "issue_date": "2026-06-15",
+      "maturity": "2029-09-15",
+      "coupon_rate": 3.0,
+      "first_coupon_date": "2026-09-15",
+      "first_coupon_rate": 0.75,
+      "first_coupon_kind": "corta"
+    }
+  ]
+}
