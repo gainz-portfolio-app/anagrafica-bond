@@ -8,15 +8,15 @@ nome e per i calcolatori (cedole, step-up, premi dei BTP retail).
 Nella release [`latest`](../../releases/tag/latest):
 
 - `anagrafica.csv.gz`: un titolo per riga, CSV compresso. Colonne:
-  - `isin`, `name`, `short`, `cfi`, `currency`, `issuer_lei`, `maturity`, `rate`, `index`, `spread`, `unit`, `venues` (codici MIC dei mercati), `kind` (`fixed`, `zero`, `variable`, `stepUp`);
-  - per le emissioni retail del Tesoro: `product`, `issue_date` (godimento), `frequency` (cedole all'anno), `steps` (`AAAA-MM-GG:tasso;…`, tasso annuo dalla cedola indicata), `loyalty_premium` (% del nominale, solo sul codice con premio), `maxi_coupon`, `pair_isin` e `pair_role` (`withPremium` = codice del collocamento con l'extra premio, `market` = codice di mercato);
+  - `isin`, `name`, `short`, `cfi`, `currency`, `issuer_lei`, `maturity`, `rate`, `index`, `spread`, `unit`, `venues` (codici MIC dei mercati), `kind` (`fixed`, `zero`, `variable`, `stepUp`, `inflationLinked`);
+  - per le emissioni retail del Tesoro: `product`, `issue_date` (godimento), `frequency` (cedole all'anno), `steps` (`AAAA-MM-GG:tasso;…`, tasso annuo dalla cedola indicata), `inflation_index` (per gli indicizzati i tassi sono reali), `loyalty_premium` (% del nominale, solo sul codice con premio) o `loyalty_premium_rule` (se il premio non è fisso, per esempio legato al PIL nei Futura), `maxi_coupon`, `pair_isin` e `pair_role` (`withPremium` = codice del collocamento con l'extra premio, `market` = codice di mercato);
   - `source`.
 - `manifest.json`: data dei dati, numero di titoli, impronta SHA-256 del file, avvisi dell'ultimo aggiornamento.
 
 ## Fonti e attribuzione
 
 - **ESMA**, Financial Instruments Reference Data System (FIRDS): file completi settimanali e variazioni giornaliere dei titoli di debito, dal [servizio file di ESMA](https://registers.esma.europa.eu/publication/searchRegister?core=esma_registers_firds_files). La riproduzione è autorizzata citando la fonte ([avviso legale](https://registers.esma.europa.eu/publication/legalNoticePage)).
-- **Ministero dell'Economia e delle Finanze**, Dipartimento del Tesoro: decreti di emissione e di accertamento, schede informative dei BTP Valore, Valore Insieme e Più ([dt.mef.gov.it](https://www.dt.mef.gov.it/it/debito_pubblico/emissioni_retail/)). I documenti sono letti da un modello AI e i dati estratti sono controllati prima della pubblicazione.
+- **Ministero dell'Economia e delle Finanze**, Dipartimento del Tesoro: decreti di emissione e di accertamento e schede informative delle emissioni retail: BTP Valore, Valore Insieme, Più, Futura, Italia e Italia Sì ([dt.mef.gov.it](https://www.dt.mef.gov.it/it/debito_pubblico/emissioni_retail/)). I documenti sono letti da un modello AI e i dati estratti sono controllati prima della pubblicazione.
 
 I dati sono **filtrati, uniti per ISIN e integrati** da Gainz: non sono i dati originali, ed ESMA e MEF non sono responsabili di questa elaborazione né la approvano. Nessuna garanzia: per decisioni di investimento valgono i documenti ufficiali.
 

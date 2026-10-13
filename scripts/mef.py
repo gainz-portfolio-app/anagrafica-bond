@@ -1,5 +1,5 @@
-"""Emissioni retail del Tesoro (famiglia BTP Valore: Valore, Valore Insieme, Più) dai documenti ufficiali del MEF:
-decreti di emissione e di accertamento, schede informative e tassi minimi dell'emissione in corso.
+"""Emissioni retail del Tesoro (BTP Valore, Valore Insieme, Più, Futura, Italia, Italia Sì) dai documenti ufficiali
+del MEF: decreti di emissione e di accertamento, schede informative e tassi minimi dell'emissione in corso.
 
 I PDF sono documenti pubblici: li legge un modello AI (Groq, chiave del progetto nei segreti dell'Action), che
 restituisce i campi in una struttura fissa; ogni risposta si controlla (`validate`) e si conserva in data/mef/, così un
@@ -18,9 +18,16 @@ PAGES = [
     "/it/debito_pubblico/emissioni_retail/btp_valore/comunicazioni_btp_valore/",
     "/it/debito_pubblico/emissioni_retail/btp_valore/doc_legale_btp_valore/decreti_emissione/",
     "/it/debito_pubblico/emissioni_retail/btp_valore/doc_legale_btp_valore/decreti_accertamento/",
+    "/it/debito_pubblico/emissioni_retail/btp_futura/doc_legale_btp_futura/decreti_emissione/",
+    "/it/debito_pubblico/emissioni_retail/btp_futura/doc_legale_btp_futura/decreti_accertamento/",
+    "/it/debito_pubblico/normativa/doc_legale_btp_italia/decreti_di_emissione.html",
+    "/it/debito_pubblico/normativa/doc_legale_btp_italia/decreti_di_accertamento.html",
+    "/it/debito_pubblico/emissioni_retail/btp_italia_si/doc_legale_btp_italia_si/decreti_di_emissione.html",
+    "/it/debito_pubblico/emissioni_retail/btp_italia_si/doc_legale_btp_italia_si/decreti_di_accertamento.html",
 ]
-# Documenti utili; FAQ, note per gli operatori e information memorandum no.
-USEFUL = re.compile(r"(Decreto-di-emissione|Decreto-di-Accertamento|Scheda-Informativa|Tassi-cedolari)", re.I)
+# Documenti utili; FAQ, note per gli operatori e information memorandum no. I nomi dei file non sono uniformi
+# ("Decreto-di-emissione", "Decreto_di_Emissione", "Decreto-accertamento").
+USEFUL = re.compile(r"(Decreto[-_ ](di[-_ ])?(emissione|accertamento)|Scheda-Informativa|Tassi-cedolari)", re.I)
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_MODEL = os.environ.get("GROQ_MODEL", "qwen/qwen3.8-27b")
 
@@ -31,8 +38,19 @@ def fetch(url):
         return response.read()
 
 
-def documents():
-    """Link ai PDF utili, raggruppati per emissione (prodotto + scadenza scritti nel nome del file)."""
+def product_of(name):
+    if re.search(r"Italia[-_ ]Si", name, re.I):
+        return "BTP Italia Sì"
+    for word, product in (("Insieme", "BTP Valore Insieme"), ("Futura", "BTP Futura"), ("Italia", "BTP Italia"),
+                          ("Valore", "BTP Valore")):
+        if word.lower() in name.lower():
+            return product
+    return "BTP Più" if re.search(r"Pi[uù]", name) else None
+
+
+def documents(today):
+    """Link ai PDF utili, raggruppati per emissione (prodotto + scadenza scritti nel nome del file); le emissioni già
+    scadute si saltano."""
     links = set()
     for page in PAGES:
         body = fetch(SITE + page).decode("utf-8", "replace")
@@ -42,11 +60,14 @@ def documents():
     issues = {}
     for link in sorted(links):
         name = link.rsplit("/", 1)[1]
-        maturity = re.search(r"(\d{2})\.(\d{2})\.(\d{4})", name)
-        if not maturity:
+        maturity = re.search(r"(\d{2})[._](\d{2})[._](\d{4})", name)
+        product = product_of(name)
+        if not maturity or not product:
             continue
-        product = "BTP Valore Insieme" if "Insieme" in name else "BTP Più" if re.search(r"Pi[uù]", name) else "BTP Valore"
-        key = f"{product}|{maturity.group(3)}-{maturity.group(2)}-{maturity.group(1)}"
+        iso = f"{maturity.group(3)}-{maturity.group(2)}-{maturity.group(1)}"
+        if iso < today:
+            continue
+        key = f"{product}|{iso}"
         issues.setdefault(key, []).append(link)
     return issues
 
@@ -61,7 +82,7 @@ PROMPT = """Sei un esperto di titoli di Stato italiani. Dai documenti ufficiali 
 schede informative, comunicati) di UNA emissione retail, estrai i dati in JSON con esattamente queste chiavi:
 
 {
-  "product": "BTP Valore" | "BTP Valore Insieme" | "BTP Più",
+  "product": "BTP Valore" | "BTP Valore Insieme" | "BTP Più" | "BTP Futura" | "BTP Italia" | "BTP Italia Sì",
   "issue_date": "AAAA-MM-GG",          // data di godimento
   "settlement_date": "AAAA-MM-GG" | null,
   "maturity": "AAAA-MM-GG",
@@ -71,7 +92,9 @@ schede informative, comunicati) di UNA emissione retail, estrai i dati in JSON c
   "steps": [                          // tassi annui lordi per periodo, in ordine
     {"first_coupon": "AAAA-MM-GG", "last_coupon": "AAAA-MM-GG", "rate": 4.10}
   ],
-  "loyalty_premium_percent": 0.5 | null,   // extra premio finale di fedeltà, % del nominale
+  "inflation_index": "FOI senza tabacchi" | "HICP senza tabacchi" | null,  // titoli indicizzati: i tassi sono reali
+  "loyalty_premium_percent": 0.5 | null,   // premio finale fisso, % del nominale (null se dipende da altro)
+  "loyalty_premium_rule": "testo" | null,  // se il premio non è fisso (es. legato alla crescita del PIL), come si calcola
   "maxi_coupon": {"date": "AAAA-MM-GG", "rate": 0.0} | null,  // cedola o premio straordinario, se c'è
   "isin_with_premium": "IT..." | null,     // codice ISIN con premio (collocamento)
   "isin_without_premium": "IT..." | null,  // codice ISIN di mercato
@@ -142,11 +165,11 @@ def validate(issue, maturity):
     return problems
 
 
-def load(folder, api_key):
+def load(folder, api_key, today):
     """Emissioni lette, dalla cache o dai documenti nuovi. Restituisce (emissioni, avvisi)."""
     os.makedirs(folder, exist_ok=True)
     issues, warnings = [], []
-    for key, links in documents().items():
+    for key, links in documents(today).items():
         product, maturity = key.split("|")
         fingerprint = hashlib.sha256("\n".join(sorted(links)).encode()).hexdigest()[:16]
         path = os.path.join(folder, f"{product.replace(' ', '-')}-{maturity}.json")

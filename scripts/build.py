@@ -20,16 +20,23 @@ import mef  # noqa: E402
 ITALY_LEI = "815600DE60799F5A9309"
 ITALIAN_VENUES = {"MOTX", "ETLX", "HMTF", "XMOT"}
 COLUMNS = ["isin", "name", "short", "cfi", "currency", "issuer_lei", "maturity", "rate", "index", "spread", "unit",
-           "venues", "kind", "product", "issue_date", "frequency", "steps", "loyalty_premium", "maxi_coupon",
-           "pair_isin", "pair_role", "source"]
+           "venues", "kind", "product", "issue_date", "frequency", "steps", "inflation_index", "loyalty_premium",
+           "loyalty_premium_rule", "maxi_coupon", "pair_isin", "pair_role", "source"]
+# Parole del nome breve FIRDS di ogni famiglia retail ("ITALIA/TV BTP FUTURA 20281117 EX").
+PRODUCT_WORDS = {"BTP Valore": "BTP VALORE", "BTP Valore Insieme": "BTP VALORE INS", "BTP Più": "BTP PIU",
+                 "BTP Futura": "BTP FUTURA", "BTP Italia": "BTP ITALIA", "BTP Italia Sì": "BTP ITALIA SI"}
 ATTRIBUTION = ("Fonti: ESMA, Financial Instruments Reference Data System (FIRDS); Ministero dell'Economia e delle "
                "Finanze, Dipartimento del Tesoro. Dati filtrati, uniti per ISIN e integrati da Gainz: non sono i dati "
                "originali e ESMA e MEF non sono responsabili di questa elaborazione.")
 
 
-def kind(cfi):
-    """Tipo di interesse dal codice CFI (terza lettera): fisso, zero coupon, variabile."""
-    return {"F": "fixed", "Z": "zero", "V": "variable", "K": "pik"}.get(cfi[2:3], "")
+def kind(bond):
+    """Tipo di interesse: indicizzati all'inflazione dei titoli di Stato italiani dal nome breve (BTP€i, BTP Italia),
+    poi dal codice CFI (terza lettera): fisso, zero coupon, variabile."""
+    short = (bond["short"] or "").upper()
+    if bond["issuer"] == ITALY_LEI and "STRIP" not in short and ("BTPI " in short or "BTP ITALIA" in short):
+        return "inflationLinked"
+    return {"F": "fixed", "Z": "zero", "V": "variable", "K": "pik"}.get(bond["cfi"][2:3], "")
 
 
 def row(bond):
@@ -37,21 +44,24 @@ def row(bond):
         "isin": bond["isin"], "name": bond["name"] or "", "short": bond["short"] or "", "cfi": bond["cfi"],
         "currency": bond["ccy"] or "", "issuer_lei": bond["issuer"] or "", "maturity": bond["maturity"] or "",
         "rate": bond["rate"] or "", "index": bond["index"] or "", "spread": bond["spread"] or "",
-        "unit": bond["unit"] or "", "venues": " ".join(sorted(bond["venues"])), "kind": kind(bond["cfi"]),
-        "product": "", "issue_date": "", "frequency": "", "steps": "", "loyalty_premium": "", "maxi_coupon": "",
+        "unit": bond["unit"] or "", "venues": " ".join(sorted(bond["venues"])), "kind": kind(bond),
+        "product": "", "issue_date": "", "frequency": "", "steps": "", "inflation_index": "", "loyalty_premium": "",
+        "loyalty_premium_rule": "", "maxi_coupon": "",
         "pair_isin": "", "pair_role": "", "source": "firds",
     }
 
 
 def pair(issue, rows):
     """ISIN con premio (collocamento) e di mercato di un'emissione: dai documenti del MEF, altrimenti da FIRDS (stesso
-    emittente e scadenza, nome breve "BTP VALORE"/"BTP PIU"; quello di mercato è quotato sul MOT)."""
+    emittente e scadenza, nome breve della famiglia; quello di mercato è quotato sul MOT, quello con premio no e per
+    Futura e BTP Italia ha "CUM" nel nome breve, quello di mercato "EX")."""
     special, regular = issue.get("isin_with_premium"), issue.get("isin_without_premium")
     if special or regular:
         return special, regular
-    word = "PIU" if issue["product"] == "BTP Più" else "VALORE"
+    word = PRODUCT_WORDS[issue["product"]]
     candidates = [r for r in rows.values() if r["issuer_lei"] == ITALY_LEI and r["maturity"] == issue["maturity"]
-                  and "BTP" in r["short"].upper() and word in r["short"].upper()]
+                  and word in r["short"].upper() and "STRIP" not in r["short"].upper()
+                  and (issue["product"] == "BTP Italia Sì" or "BTP ITALIA SI" not in r["short"].upper())]
     listed = [r for r in candidates if set(r["venues"].split()) & ITALIAN_VENUES]
     unlisted = [r for r in candidates if r not in listed]
     if len(listed) == 1 and len(unlisted) <= 1:
@@ -67,7 +77,9 @@ def apply_issue(issue, rows, warnings):
     steps = ";".join(f"{s['first_coupon']}:{s['rate']}" for s in issue["steps"])
     maxi = issue.get("maxi_coupon")
     common = {
-        "kind": "stepUp" if len({s["rate"] for s in issue["steps"]}) > 1 else "fixed",
+        "kind": "inflationLinked" if issue.get("inflation_index")
+        else "stepUp" if len({s["rate"] for s in issue["steps"]}) > 1 else "fixed",
+        "inflation_index": issue.get("inflation_index") or "",
         "product": issue["product"], "issue_date": issue["issue_date"], "frequency": str(issue["frequency"]),
         "steps": steps, "maxi_coupon": f"{maxi['date']}:{maxi['rate']}" if maxi and maxi.get("date") else "",
         "maturity": issue["maturity"], "currency": "EUR", "issuer_lei": ITALY_LEI,
@@ -79,6 +91,7 @@ def apply_issue(issue, rows, warnings):
                                                                "source": "mef"}
         base.update(common)
         base["loyalty_premium"] = str(issue.get("loyalty_premium_percent") or "") if role == "withPremium" else ""
+        base["loyalty_premium_rule"] = (issue.get("loyalty_premium_rule") or "") if role == "withPremium" else ""
         base.update({"pair_isin": other or "", "pair_role": role if other else ""})
         base["source"] = "firds+mef" if base["source"].startswith("firds") else "mef"
         rows[isin] = base
@@ -112,7 +125,7 @@ def main():
 
     bonds, firds_date = firds.load(today, args.cache)
     rows = {isin: row(bond) for isin, bond in bonds.items()}
-    issues, warnings = mef.load(os.path.join(root, "data", "mef"), os.environ.get("GROQ_API_KEY"))
+    issues, warnings = mef.load(os.path.join(root, "data", "mef"), os.environ.get("GROQ_API_KEY"), today.isoformat())
     for issue in issues:
         apply_issue(issue, rows, warnings)
     manual = apply_manual(os.path.join(root, "data", "aggiunte.csv"), rows)
