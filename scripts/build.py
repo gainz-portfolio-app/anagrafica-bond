@@ -23,7 +23,7 @@ ITALIAN_VENUES = {"MOTX", "ETLX", "HMTF", "XMOT"}
 COLUMNS = ["isin", "name", "short", "cfi", "currency", "issuer_lei", "maturity", "rate", "index", "spread", "unit",
            "venues", "kind", "product", "issue_date", "frequency", "steps", "inflation_index", "loyalty_premium",
            "loyalty_premium_rule", "maxi_coupon", "pair_isin", "pair_role", "first_coupon", "first_coupon_rate",
-           "source"]
+           "public_issuer", "source"]
 # Parole del nome breve FIRDS di ogni famiglia retail ("ITALIA/TV BTP FUTURA 20281117 EX").
 PRODUCT_WORDS = {"BTP Valore": "BTP VALORE", "BTP Valore Insieme": "BTP VALORE INS", "BTP Più": "BTP PIU",
                  "BTP Futura": "BTP FUTURA", "BTP Italia": "BTP ITALIA", "BTP Italia Sì": "BTP ITALIA SI"}
@@ -48,9 +48,22 @@ def row(bond):
         "rate": bond["rate"] or "", "index": bond["index"] or "", "spread": bond["spread"] or "",
         "unit": bond["unit"] or "", "venues": " ".join(sorted(bond["venues"])), "kind": kind(bond),
         "product": "", "issue_date": "", "frequency": "", "steps": "", "inflation_index": "", "loyalty_premium": "",
-        "loyalty_premium_rule": "", "maxi_coupon": "", "first_coupon": "", "first_coupon_rate": "",
+        "loyalty_premium_rule": "", "maxi_coupon": "", "first_coupon": "", "first_coupon_rate": "", "public_issuer": "",
         "pair_isin": "", "pair_role": "", "source": "firds",
     }
+
+
+def mark_public_issuers(rows):
+    """Titolo di Stato o sovranazionale (ritenuta 12,5%): garanzia "T" o "C" nel codice CFI. I mercati non segnalano tutti
+    allo stesso modo (11 titoli dell'Italia su 542 con "U"): vale l'emittente, se almeno l'80% dei suoi titoli ce l'ha."""
+    totals, public = {}, {}
+    for r in rows.values():
+        lei = r["issuer_lei"]
+        totals[lei] = totals.get(lei, 0) + 1
+        public[lei] = public.get(lei, 0) + (1 if r["cfi"][3:4] in ("T", "C") else 0)
+    for r in rows.values():
+        lei = r["issuer_lei"]
+        r["public_issuer"] = "1" if lei and public[lei] >= 0.8 * totals[lei] else "0"
 
 
 def pair(issue, rows):
@@ -160,6 +173,7 @@ def main():
 
     bonds, firds_date = firds.load(today, args.cache)
     rows = {isin: row(bond) for isin, bond in bonds.items()}
+    mark_public_issuers(rows)
     issues, warnings = mef.load(os.path.join(root, "data", "mef"), os.environ.get("GROQ_API_KEY"), today.isoformat())
     pending = [f"{i['product']} {i['maturity']}" for i in issues if i.get("pending")]
     for issue in issues:
