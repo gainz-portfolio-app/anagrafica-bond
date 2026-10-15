@@ -244,4 +244,16 @@ def load(folder, api_key, today):
         with open(path, "w") as handle:
             json.dump(issue, handle, ensure_ascii=False, indent=2)
         issues.append(issue)
+    # Emissioni già lette che il Tesoro non linka più (pagine riordinate, documenti archiviati): restano dalla cache
+    # finché il titolo non scade, altrimenti tornerebbero ai soli dati FIRDS (senza scalini né premio).
+    listed = {(issue["product"], issue["maturity"]) for issue in issues}
+    for name in sorted(os.listdir(folder)):
+        if not name.endswith(".json"):
+            continue
+        cached = json.load(open(os.path.join(folder, name)))
+        key = (cached.get("product"), cached.get("maturity"))
+        if None in key or key in listed or cached["maturity"] < today or cached.get("pending"):
+            continue
+        issues.append(cached)
+        listed.add(key)
     return issues, warnings

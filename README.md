@@ -26,4 +26,4 @@ I dati sono **filtrati, uniti per ISIN e integrati** da Gainz: non sono i dati o
 - Automatico la domenica e il mercoledì (GitHub Actions).
 - A mano: **Actions › Anagrafica obbligazioni › Run workflow**, per esempio quando il Tesoro annuncia un'emissione.
 - Correzioni: `data/aggiunte.csv`, stesse colonne del file; le celle piene vincono sui dati delle fonti.
-- Le emissioni lette dai documenti del Tesoro restano in `data/mef/`: un documento già letto non si rilegge.
+- Le emissioni lette dai documenti del Tesoro restano in `data/mef/`: un documento già letto non si rilegge, e un'emissione che il Tesoro non linka più resta dalla cache fino alla scadenza del titolo.
