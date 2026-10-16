@@ -11,17 +11,33 @@
     "10-27"
   ],
   "rates_final": false,
-  "steps": [],
+  "steps": [
+    {
+      "first_coupon": "2027-01-27",
+      "last_coupon": "2028-10-27",
+      "rate": 3.7
+    },
+    {
+      "first_coupon": "2029-01-27",
+      "last_coupon": "2030-10-27",
+      "rate": 4.1
+    },
+    {
+      "first_coupon": "2031-01-27",
+      "last_coupon": "2031-10-27",
+      "rate": 4.7
+    }
+  ],
   "inflation_index": null,
   "loyalty_premium_percent": null,
   "loyalty_premium_rule": null,
   "maxi_coupon": null,
-  "isin_with_premium": null,
+  "isin_with_premium": "IT0005735201",
   "isin_without_premium": null,
-  "notes": "Scheda informativa pre-collocamento: i tassi definitivi non sono ancora noti (vengono fissati con Decreto di Accertamento dopo la chiusura del collocamento). I tassi minimi garantiti non sono specificati nel testo fornito.",
-  "pending": true,
-  "fingerprint": "fac65f529c8da7f5",
+  "notes": "Tassi cedolari minimi garantiti comunicati; i tassi definitivi saranno fissati con Decreto di Accertamento alla chiusura del collocamento.",
+  "fingerprint": "4c11a25a4fc188bd",
   "documents": [
-    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-27.10.2031-8-Scheda-Informativa.pdf"
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-27.10.2031-8-Scheda-Informativa.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-e-BTP-Valore-Insieme-27.10.2031-8-e-9-Tassi-cedolari-minimi-garantiti.pdf"
   ]
 }

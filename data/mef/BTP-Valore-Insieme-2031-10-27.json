@@ -8,17 +8,24 @@
     "10-27"
   ],
   "rates_final": false,
-  "steps": [],
+  "steps": [
+    {
+      "first_coupon": "2031-10-27",
+      "last_coupon": "2031-10-27",
+      "rate": 4.45
+    }
+  ],
   "inflation_index": null,
   "loyalty_premium_percent": null,
   "loyalty_premium_rule": null,
   "maxi_coupon": null,
-  "isin_with_premium": null,
+  "isin_with_premium": "IT0005735227",
   "isin_without_premium": null,
-  "notes": "Titolo a cedola singola (one coupon). Il tasso cedolare definitivo non è presente nel documento (Scheda Informativa), verrà fissato con Decreto di Accertamento.",
-  "pending": true,
-  "fingerprint": "bb844dfad8aeeaf4",
+  "notes": "Tasso cedolare minimo garantito; il tasso definitivo sarà fissato con Decreto di Accertamento alla chiusura del collocamento.",
+  "single_coupon_total": 22.25,
+  "fingerprint": "2e2a4e27c557d1cd",
   "documents": [
-    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-Insieme-27.10.2031-9-Scheda-Informativa.pdf"
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-Insieme-27.10.2031-9-Scheda-Informativa.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-e-BTP-Valore-Insieme-27.10.2031-8-e-9-Tassi-cedolari-minimi-garantiti.pdf"
   ]
 }
