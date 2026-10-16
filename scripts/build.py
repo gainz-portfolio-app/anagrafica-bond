@@ -22,7 +22,7 @@ ITALY_LEI = "815600DE60799F5A9309"
 ITALIAN_VENUES = {"MOTX", "ETLX", "HMTF", "XMOT"}
 COLUMNS = ["isin", "name", "short", "cfi", "currency", "issuer_lei", "maturity", "rate", "index", "spread", "unit",
            "venues", "kind", "product", "issue_date", "frequency", "steps", "inflation_index", "loyalty_premium",
-           "loyalty_premium_rule", "maxi_coupon", "pair_isin", "pair_role", "first_coupon", "first_coupon_rate",
+           "loyalty_premium_rule", "maxi_coupon", "rates_final", "single_coupon_total", "pair_isin", "pair_role", "first_coupon", "first_coupon_rate",
            "public_issuer", "source"]
 # Parole del nome breve FIRDS di ogni famiglia retail ("ITALIA/TV BTP FUTURA 20281117 EX").
 PRODUCT_WORDS = {"BTP Valore": "BTP VALORE", "BTP Valore Insieme": "BTP VALORE INS", "BTP Più": "BTP PIU",
@@ -48,7 +48,7 @@ def row(bond):
         "rate": bond["rate"] or "", "index": bond["index"] or "", "spread": bond["spread"] or "",
         "unit": bond["unit"] or "", "venues": " ".join(sorted(bond["venues"])), "kind": kind(bond),
         "product": "", "issue_date": "", "frequency": "", "steps": "", "inflation_index": "", "loyalty_premium": "",
-        "loyalty_premium_rule": "", "maxi_coupon": "", "first_coupon": "", "first_coupon_rate": "", "public_issuer": "",
+        "loyalty_premium_rule": "", "maxi_coupon": "", "rates_final": "", "single_coupon_total": "", "first_coupon": "", "first_coupon_rate": "", "public_issuer": "",
         "pair_isin": "", "pair_role": "", "source": "firds",
     }
 
@@ -105,6 +105,9 @@ def apply_issue(issue, rows, warnings):
         "inflation_index": issue.get("inflation_index") or "",
         "product": issue["product"], "issue_date": issue["issue_date"], "frequency": str(issue["frequency"]),
         "steps": steps, "maxi_coupon": f"{maxi['date']}:{maxi['rate']}" if maxi and maxi.get("date") else "",
+        # Tassi minimi garantiti (collocamento in corso) o definitivi; i minimi possono essere rivisti solo al rialzo.
+        "rates_final": "1" if issue.get("rates_final") else "0",
+        "single_coupon_total": str(issue.get("single_coupon_total") or ""),
         "maturity": issue["maturity"], "currency": "EUR", "issuer_lei": ITALY_LEI,
     }
     for isin, role, other in ((special, "withPremium", regular), (regular, "market", special)):

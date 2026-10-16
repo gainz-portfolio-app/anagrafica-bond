@@ -41,14 +41,18 @@ def fetch(url):
         return response.read()
 
 
-def product_of(name):
+def products_of(name):
+    """Emissioni di cui parla un documento. I collocamenti doppi hanno documenti comuni
+    ("BTP-Valore-e-BTP-Valore-Insieme-27.10.2031-8-e-9-Tassi-cedolari-minimi-garantiti"): valgono per entrambi."""
     if re.search(r"Italia[-_ ]Si", name, re.I):
-        return "BTP Italia Sì"
+        return ["BTP Italia Sì"]
+    if re.search(r"Valore[-_ ]e[-_ ]BTP[-_ ]Valore[-_ ]Insieme", name, re.I):
+        return ["BTP Valore", "BTP Valore Insieme"]
     for word, product in (("Insieme", "BTP Valore Insieme"), ("Futura", "BTP Futura"), ("Italia", "BTP Italia"),
                           ("Valore", "BTP Valore")):
         if word.lower() in name.lower():
-            return product
-    return "BTP Più" if re.search(r"Pi[uù]", name) else None
+            return [product]
+    return ["BTP Più"] if re.search(r"Pi[uù]", name) else []
 
 
 def documents(today):
@@ -64,14 +68,13 @@ def documents(today):
     for link in sorted(links):
         name = link.rsplit("/", 1)[1]
         maturity = re.search(r"(\d{2})[._](\d{2})[._](\d{4})", name)
-        product = product_of(name)
-        if not maturity or not product:
+        if not maturity:
             continue
         iso = f"{maturity.group(3)}-{maturity.group(2)}-{maturity.group(1)}"
         if iso < today:
             continue
-        key = f"{product}|{iso}"
-        issues.setdefault(key, []).append(link)
+        for product in products_of(name):
+            issues.setdefault(f"{product}|{iso}", []).append(link)
     return issues
 
 
@@ -124,7 +127,11 @@ schede informative, comunicati) di UNA emissione retail, estrai i dati in JSON c
 }
 
 Regole: i tassi sono numeri con il punto decimale (4,10% -> 4.10). Se ci sono sia i tassi minimi garantiti sia quelli
-definitivi, usa i definitivi e metti rates_final true. Non inventare: se un dato non c'è, null. Rispondi solo con il JSON."""
+definitivi, usa i definitivi e metti rates_final true. Un documento può parlare di due emissioni (es. BTP Valore e BTP
+Valore Insieme): estrai solo quella indicata all'inizio. Titolo con cedola unica alla scadenza (BTP Valore Insieme):
+frequency 1, un solo periodo in steps con first_coupon e last_coupon uguali alla scadenza e rate uguale al tasso
+TOTALE della cedola unica come scritto nel documento (22,25% -> 22.25), maxi_coupon null. Non inventare: se un dato
+non c'è, null. Rispondi solo con il JSON."""
 
 
 def extract(texts, api_key, attempts=4, prompt=None):
@@ -164,6 +171,38 @@ def isin_ok(code):
         n = int(d) * (2 if i % 2 == 0 else 1)
         total += n // 10 + n % 10
     return (10 - total % 10) % 10 == int(code[-1])
+
+
+def single_coupon_as_annual(issue):
+    """BTP Valore Insieme: il Tesoro dà il tasso totale della cedola unica (22,25% in 5 anni). Nell'anagrafica, come per
+    gli altri titoli, il tasso è annuo: una sola cedola alla scadenza con tasso annuo = totale ÷ anni (prima cedola
+    irregolare lunga quanto il titolo); il totale resta in single_coupon_total."""
+    steps = issue.get("steps") or []
+    if issue.get("product") != "BTP Valore Insieme" or len(steps) != 1 or not issue.get("issue_date"):
+        return issue
+    total = steps[0].get("rate")
+    start, end = issue["issue_date"], issue.get("maturity") or ""
+    if not isinstance(total, (int, float)) or not re.match(r"\d{4}-\d{2}-\d{2}$", end):
+        return issue
+    months = (int(end[:4]) - int(start[:4])) * 12 + int(end[5:7]) - int(start[5:7])
+    if months <= 0 or end[8:] != start[8:]:
+        return issue
+    issue["single_coupon_total"] = total
+    issue["steps"] = [{"first_coupon": end, "last_coupon": end, "rate": round(total * 12 / months, 6)}]
+    issue["frequency"] = 1
+    return issue
+
+
+def lowered_rates(issue, cached):
+    """I tassi definitivi possono solo confermare o alzare i minimi garantiti: periodi con un tasso più basso di quello
+    già letto indicano una lettura sbagliata."""
+    if not cached or cached.get("pending") or cached.get("rates_final"):
+        return []
+    before = {step["first_coupon"]: step["rate"] for step in cached.get("steps") or []}
+    return [f"tasso {step['rate']} sotto il minimo {before[step['first_coupon']]} dal {step['first_coupon']}"
+            for step in issue.get("steps") or []
+            if step.get("first_coupon") in before and isinstance(step.get("rate"), (int, float))
+            and step["rate"] < before[step["first_coupon"]]]
 
 
 def validate(issue, maturity):
@@ -216,8 +255,9 @@ def load(folder, api_key, today):
                 issues.append(cached)
             continue
         try:
-            texts = [f"Documento: {link.rsplit('/', 1)[1]}\n\n{condense(pdf_text(fetch(link)))}" for link in links]
-            issue = extract(texts, api_key)
+            texts = [f"Emissione: {product} con scadenza {maturity}"]
+            texts += [f"Documento: {link.rsplit('/', 1)[1]}\n\n{condense(pdf_text(fetch(link)))}" for link in links]
+            issue = single_coupon_as_annual(extract(texts, api_key))
         except Exception as error:  # un'emissione non letta non ferma le altre
             warnings.append(f"{key}: documenti non letti ({error})")
             if cached:
@@ -225,7 +265,7 @@ def load(folder, api_key, today):
             continue
         finally:
             time.sleep(PAUSE)  # limite di token al minuto del piano gratuito
-        problems = validate(issue, maturity)
+        problems = validate(issue, maturity) + lowered_rates(issue, cached)
         # Emissione annunciata ma senza tassi (il Tesoro li comunica pochi giorni prima del collocamento): in attesa,
         # non un errore; si conserva per non rileggere gli stessi documenti.
         if not issue.get("steps") and not any("ccertamento" in link for link in links):
