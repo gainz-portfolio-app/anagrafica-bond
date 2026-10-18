@@ -21,11 +21,12 @@
   "maxi_coupon": null,
   "isin_with_premium": "IT0005735227",
   "isin_without_premium": null,
-  "notes": "Tasso cedolare minimo garantito; il tasso definitivo sarà fissato con Decreto di Accertamento alla chiusura del collocamento.",
+  "notes": "Tasso cedolare minimo garantito del 22,25%. Il tasso definitivo sarà fissato alla chiusura del collocamento e potrà essere rivisto solo al rialzo.",
   "single_coupon_total": 22.25,
-  "fingerprint": "2e2a4e27c557d1cd",
+  "fingerprint": "e7ab14f74aa70292",
   "documents": [
     "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-Insieme-27.10.2031-9-Scheda-Informativa.pdf",
-    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-e-BTP-Valore-Insieme-27.10.2031-8-e-9-Tassi-cedolari-minimi-garantiti.pdf"
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-e-BTP-Valore-Insieme-27.10.2031-8-e-9-Tassi-cedolari-minimi-garantiti.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-Insieme-27.10.2031-9.pdf"
   ]
 }

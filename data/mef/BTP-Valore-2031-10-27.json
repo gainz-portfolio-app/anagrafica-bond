@@ -34,10 +34,11 @@
   "maxi_coupon": null,
   "isin_with_premium": "IT0005735201",
   "isin_without_premium": null,
-  "notes": "Tassi cedolari minimi garantiti comunicati; i tassi definitivi saranno fissati con Decreto di Accertamento alla chiusura del collocamento.",
-  "fingerprint": "4c11a25a4fc188bd",
+  "notes": "Tassi cedolari minimi garantiti; i tassi definitivi saranno fissati con Decreto di Accertamento dopo la chiusura del collocamento.",
+  "fingerprint": "040284ba226276b7",
   "documents": [
     "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-27.10.2031-8-Scheda-Informativa.pdf",
-    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-e-BTP-Valore-Insieme-27.10.2031-8-e-9-Tassi-cedolari-minimi-garantiti.pdf"
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/comunicazioni_emissioni/btp_valore_comunicazione_emissione/BTP-Valore-e-BTP-Valore-Insieme-27.10.2031-8-e-9-Tassi-cedolari-minimi-garantiti.pdf",
+    "https://www.dt.mef.gov.it/export/sites/sitodt/modules/documenti_it/debito_pubblico/normativa_spalla_destra/doc_legale_btp_valore/decreti_emissione/Decreto-di-emissione-BTP-Valore-27.10.2031-8-.pdf"
   ]
 }
