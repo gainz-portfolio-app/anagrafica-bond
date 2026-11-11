@@ -26,8 +26,16 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Tre tentativi a un minuto l'uno dall'altro: l'11/11/2026 il DNS della macchina di GitHub non risolveva
+      # security.ubuntu.com e il giro si è fermato qui.
       - name: Strumenti per leggere i PDF
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+        run: |
+          for i in 1 2 3; do
+            sudo apt-get update -qq -o Acquire::Retries=3 &&
+              sudo apt-get install -y -qq -o Acquire::Retries=3 poppler-utils && exit 0
+            sleep 60
+          done
+          exit 1
 
       - name: Costruisci l'anagrafica
         env:
